@@ -117,9 +117,9 @@ public struct ToyData
 
 public enum EPlatformType
 {
-    Round,
-    Octogon,
-    Square
+    Platform1,
+    Platform2,
+    Platform3
 }
 
 public enum EArenaType

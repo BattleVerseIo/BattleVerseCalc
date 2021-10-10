@@ -98,42 +98,10 @@ public class TestOneController : MonoBehaviour
         _bot1_Log.text = string.Empty;
         _bot2_Log.text = string.Empty;
 
-        string damage;
-        string damageAdditional;
         for (int i = 0; i < rounds.Count; i++)
         {
             _bot1_Log.text += rounds[i].GetBotLog(rounds[i].Bot_1, rounds[i].Bot_2);
             _bot2_Log.text += rounds[i].GetBotLog(rounds[i].Bot_2, rounds[i].Bot_1);
-            /*
-            _bot1_Log.text += $"Round {i+1}\n";
-            _bot1_Log.text += $"HP: {rounds[i].Bot_1.hpBefore}\n";
-            _bot1_Log.text += $"Attack: {rounds[i].Bot_1.attack} {(rounds[i].Bot_1.isCrit ? $"* {rounds[i].Bot_1.crit} Crit = {rounds[i].Bot_1.attack * rounds[i].Bot_1.crit}" : "")}\n";
-            damage = $"Damage: {rounds[i].Bot_2.attack * rounds[i].Bot_2.crit}";
-            damageAdditional = string.Empty;
-            if (rounds[i].Bot_1.block < 1)
-                damageAdditional += $" * {rounds[i].Bot_1.block} Block";
-            if (rounds[i].Bot_1.platform > 0)
-                damageAdditional += $" - {rounds[i].Bot_1.platform} Platform";
-            if (damageAdditional != String.Empty)
-                damageAdditional += $" = {rounds[i].Bot_2.attack * rounds[i].Bot_2.crit * rounds[i].Bot_1.block - rounds[i].Bot_1.platform}";
-            _bot1_Log.text += $"{damage} {damageAdditional}\n";
-            _bot1_Log.text += "-----------------------------------------------------\n";
-            
-            _bot2_Log.text += $"Round {i+1}\n";
-            _bot2_Log.text += $"HP: {rounds[i].Bot_2.hpBefore}\n";
-            _bot2_Log.text += $"Attack: {rounds[i].Bot_2.attack} {(rounds[i].Bot_2.isCrit ? $"* {rounds[i].Bot_2.crit} Crit = {rounds[i].Bot_2.attack * rounds[i].Bot_2.crit}" : "")}\n";
-            damage = $"Damage: {rounds[i].Bot_1.attack * rounds[i].Bot_1.crit}";
-            damageAdditional = string.Empty;
-            if (rounds[i].Bot_2.block < 1)
-                damageAdditional += $" * {rounds[i].Bot_2.block} Block";
-            if (rounds[i].Bot_2.platform > 0)
-                damageAdditional += $" - {rounds[i].Bot_2.platform} Platform";
-            if (damageAdditional != String.Empty)
-                damageAdditional += $" = {rounds[i].Bot_1.attack * rounds[i].Bot_1.crit * rounds[i].Bot_2.block - rounds[i].Bot_2.platform}";
-            _bot2_Log.text += $"{damage} {damageAdditional}\n";
-            //_bot2_Log.text += $"Damage: {rounds[i].Bot_1.attack * rounds[i].Bot_1.crit} {(rounds[i].Bot_2.isBlock ? $"* {rounds[i].Bot_2.block} Block {(rounds[i].Bot_2.platform > 0 ? $"- {rounds[i].Bot_2.platform} Platform" : "")} = {rounds[i].Bot_1.attack * rounds[i].Bot_1.crit * rounds[i].Bot_2.block - rounds[i].Bot_2.platform}" : "")}\n";
-            _bot2_Log.text += "-----------------------------------------------------\n";
-            */
         }
         
         _bot1_Log.text += $"HP: {rounds[rounds.Count - 1].Bot_1.hpAfter}\n";

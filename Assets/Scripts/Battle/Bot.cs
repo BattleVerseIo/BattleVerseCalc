@@ -30,11 +30,16 @@ public class Bot
         _toy = toy;
         _platform = platform;
 
+        Reset();
+    }
+
+    public void Reset()
+    {
         _currHp = Data.Base.baseHp;
         _critRound = Random.Range(0, Data.Base.roundCount);
         _blockRound = Random.Range(0, Data.Base.roundCount);
     }
-
+    
     public void Damage(float value)
     {
         _currHp -= value;
