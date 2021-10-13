@@ -34,12 +34,13 @@ public class Battle
     public Round ExecuteRound(int roundIndex)
     {
         Round round = new Round();
-
+        
+        
         round.Id = roundIndex;
+        round.Bot_1.attack = 0;
+        round.Bot_2.attack = 0;
         round.Bot_1.hpBefore = _bot_1.Hp;
         round.Bot_2.hpBefore = _bot_2.Hp;
-        round.Bot_1.attack = _bot_1.Attack();
-        round.Bot_2.attack = _bot_2.Attack();
         round.Bot_1.crit = 1;
         round.Bot_2.crit = 1;
         round.Bot_1.block = 1;
@@ -61,18 +62,21 @@ public class Battle
 
         if (_bot_1.BlockRound == roundIndex)
         {
-            round.Bot_1.block = _bot_1.Block();
+            round.Bot_1.block = _bot_1.Block(_bot_2.Weapon);
             round.Bot_1.platform = _bot_1.Platform == (EPlatformType) _arena ? Data.Base.platformBonus : 0;
         }
 
         if (_bot_2.BlockRound == roundIndex)
         {
-            round.Bot_2.block = _bot_2.Block();
+            round.Bot_2.block = _bot_2.Block(_bot_1.Weapon);
             round.Bot_2.platform = _bot_2.Platform == (EPlatformType) _arena ? Data.Base.platformBonus : 0;
         }
-
+        
+        round.Bot_1.attack = _bot_1.Attack();
+        round.Bot_2.attack = _bot_2.Attack();
         _bot_1.Damage(round.Bot_2.attack * round.Bot_2.crit * round.Bot_1.block - round.Bot_1.platform);
         _bot_2.Damage(round.Bot_1.attack * round.Bot_1.crit * round.Bot_2.block - round.Bot_2.platform);
+
         round.Bot_1.hpAfter = _bot_1.Hp;
         round.Bot_2.hpAfter = _bot_2.Hp;
 

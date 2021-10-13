@@ -50,9 +50,9 @@ public class Bot
         return Data.Base.baseAttack + Data.Weapos[(int) _weapon].Damage;
     }
     
-    public float Block()
+    public float Block(EWeaponType strikeWeapon)
     {
-        return 1 - (Data.Base.baseDeffence + Data.Toys[(int) _toy].Defence) / 100;
+        return 1 - (Data.Resistance[(int)strikeWeapon].value[(int)_toy] + Data.Toys[(int) _toy].Defence) / 100;
     }
     
 }
