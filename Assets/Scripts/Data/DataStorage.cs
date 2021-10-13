@@ -6,6 +6,7 @@ public class DataStorage
     private const string BASE = "base";
     private const string WEAPONS = "weapons";
     private const string TOYS = "toys";
+    private const string RESISTANCE = "resistance";
 
     public void Load()
     {
@@ -21,6 +22,8 @@ public class DataStorage
             Data.Weapos = JsonHelper.FromJson<WeaponData>(PlayerPrefs.GetString(WEAPONS));
         if (PlayerPrefs.HasKey(TOYS))
             Data.Toys = JsonHelper.FromJson<ToyData>(PlayerPrefs.GetString(TOYS));
+        if (PlayerPrefs.HasKey(RESISTANCE))
+            Data.Resistance = JsonHelper.FromJson<ResistanceData>(PlayerPrefs.GetString(RESISTANCE));
     }
 
     public void Save()
@@ -28,6 +31,8 @@ public class DataStorage
         PlayerPrefs.SetString(BASE, JsonUtility.ToJson(Data.Base));
         PlayerPrefs.SetString(WEAPONS, JsonHelper.ToJson(Data.Weapos));
         PlayerPrefs.SetString(TOYS, JsonHelper.ToJson(Data.Toys));
+        string json = JsonHelper.ToJson(Data.Resistance);
+        PlayerPrefs.SetString(RESISTANCE, json);
         
         PlayerPrefs.Save();
     }

@@ -8,12 +8,14 @@ public static class Data
     public static BaseData Base;
     public static WeaponData[] Weapos;
     public static ToyData[] Toys;
+    public static ResistanceData[] Resistance;
 
     public static void InitDefault()
     {
         Base = new BaseData();
-        
-        Weapos = new WeaponData[10];
+
+        string[] weaponNames = Enum.GetNames(typeof(EWeaponType));
+        Weapos = new WeaponData[weaponNames.Length];
         Weapos[0].Type = EWeaponType.Lighting;
         Weapos[0].Damage = 3;
         Weapos[1].Type = EWeaponType.Claw;
@@ -35,6 +37,7 @@ public static class Data
         Weapos[9].Type = EWeaponType.Axe;
         Weapos[9].Damage = 1f;
 
+        string[] toyNames = Enum.GetNames(typeof(EToyType));
         Toys = new ToyData[11];
         Toys[0].Type = EToyType.Drum;
         Toys[0].Defence = 3;
@@ -58,6 +61,34 @@ public static class Data
         Toys[9].Defence = 1;
         Toys[10].Type = EToyType.Balloons;
         Toys[10].Defence = 1;
+        
+        Resistance = new ResistanceData[weaponNames.Length];
+        Resistance[0] = new ResistanceData() {value = new float[] {5, 10, 15, 20, 25, 10, 40, 30, 15, 25, 50}};
+        Resistance[1] = new ResistanceData() {value = new float[] {5, 40, 10, 50, 30, 10, 20, 10, 15, 40, 15}};
+        Resistance[2] = new ResistanceData() {value = new float[] {10, 5, 20, 5, 35, 20, 25, 15, 50, 25, 45}};
+        Resistance[3] = new ResistanceData() {value = new float[] {10, 25, 10, 10, 20, 25, 30, 50, 25, 30, 15}};
+        Resistance[4] = new ResistanceData() {value = new float[] {15, 30, 30, 15, 10, 25, 50, 30, 10, 25, 10}};
+        Resistance[5] = new ResistanceData() {value = new float[] {25, 15, 15, 30, 20, 35, 10, 10, 35, 10, 25}};
+        Resistance[6] = new ResistanceData() {value = new float[] {40, 15, 35, 15, 50, 15, 15, 25, 10, 25, 10}};
+        Resistance[7] = new ResistanceData() {value = new float[] {25, 35, 50, 35, 10, 25, 10, 10, 25, 10, 15}};
+        Resistance[8] = new ResistanceData() {value = new float[] {40, 35, 15, 20, 20, 15, 15, 25, 10, 15, 10}};
+        Resistance[9] = new ResistanceData() {value = new float[] {45, 15, 30, 30, 10, 50, 10, 15, 15, 10, 5}};
+        
+        /*
+            Resistance = new float[,]
+        {
+            {5, 10, 15, 20, 25, 10, 40, 30, 15, 25, 50},
+            {5, 40, 10, 50, 30, 10, 20, 10, 15, 40, 15},
+            {10, 5, 20, 5, 35, 20, 25, 15, 50, 25, 45}, 
+            {10, 25, 10, 10, 20, 25, 30, 50, 25, 30, 15}, 
+            {15, 30, 30, 15, 10, 25, 50, 30, 10, 25, 10}, 
+            {25, 15, 15, 30, 20, 35, 10, 10, 35, 10, 25}, 
+            {40, 15, 35, 15, 50, 15, 15, 25, 10, 25, 10}, 
+            {25, 35, 50, 35, 10, 25, 10, 10, 25, 10, 15}, 
+            {40, 35, 15, 20, 20, 15, 15, 25, 10, 15, 10}, 
+            {45, 15, 30, 30, 10, 50, 10, 15, 15, 10, 5} 
+        };
+         */
     }
 }
 
@@ -113,6 +144,12 @@ public struct ToyData
 {
     public EToyType Type;
     public float Defence;
+}
+
+[Serializable]
+public struct ResistanceData
+{
+    public float[] value;
 }
 
 public enum EPlatformType
