@@ -89,7 +89,8 @@ public class TestOneController : MonoBehaviour
 
     private void PrintLog(Battle battle)
     {
-        if (battle.bot1.Hp == battle.bot2.Hp)
+        
+        if (Mathf.Approximately(battle.bot1.Hp, battle.bot2.Hp))
             _winnerLabel.text = "Draw";
         else
             _winnerLabel.text = battle.bot1.Hp > battle.bot2.Hp ? "Winner: Bot1" : "Winner: Bot2";

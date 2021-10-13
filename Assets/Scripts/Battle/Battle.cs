@@ -44,8 +44,8 @@ public class Battle
         round.Bot_2.crit = 1;
         round.Bot_1.block = 1;
         round.Bot_2.block = 1;
-        round.Bot_1.platform = _bot_1.Platform == (EPlatformType) _arena ? Data.Base.platformBonus : 0;
-        round.Bot_2.platform = _bot_2.Platform == (EPlatformType) _arena ? Data.Base.platformBonus : 0;
+        round.Bot_1.platform = 0;
+        round.Bot_2.platform = 0;
 
         if (_bot_1.CritRound == roundIndex)
         {
@@ -62,11 +62,13 @@ public class Battle
         if (_bot_1.BlockRound == roundIndex)
         {
             round.Bot_1.block = _bot_1.Block();
+            round.Bot_1.platform = _bot_1.Platform == (EPlatformType) _arena ? Data.Base.platformBonus : 0;
         }
 
         if (_bot_2.BlockRound == roundIndex)
         {
             round.Bot_2.block = _bot_2.Block();
+            round.Bot_2.platform = _bot_2.Platform == (EPlatformType) _arena ? Data.Base.platformBonus : 0;
         }
 
         _bot_1.Damage(round.Bot_2.attack * round.Bot_2.crit * round.Bot_1.block - round.Bot_1.platform);

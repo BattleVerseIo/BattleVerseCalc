@@ -20,12 +20,13 @@ public struct Round
         log += $"Attack: {bot1.attack} {(bot1.isCrit ? $"* {bot1.crit} Crit = {bot1.attack * bot1.crit}" : "")}\n";
         damage = $"Damage: {bot2.attack * bot2.crit}";
         damageAdditional = string.Empty;
-        if (bot1.block < 1)
+        if (bot1.block < 1) 
             damageAdditional += $" * {bot1.block} Block";
         if (bot1.platform > 0)
             damageAdditional += $" - {bot1.platform} Platform";
         if (damageAdditional != String.Empty)
             damageAdditional += $" = {bot2.attack * bot2.crit * bot1.block - bot1.platform}";
+        
         log += $"{damage} {damageAdditional}\n";
         log += "-----------------------------------------------------\n";
 
