@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 
@@ -31,7 +32,7 @@ public class ResistaceItem : MonoBehaviour
         string[] toyNames = Enum.GetNames(typeof(EToyType));
         for (int i = 0; i < toyNames.Length; i++)
         {
-            Data.Resistance[(int) _weaponType].value[i] = float.Parse(_inputs[i].text);
+            Data.Resistance[(int) _weaponType].value[i] = float.Parse(_inputs[i].text, CultureInfo.InvariantCulture);
         }
     }
 }

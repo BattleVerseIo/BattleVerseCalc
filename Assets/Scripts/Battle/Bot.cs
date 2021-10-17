@@ -36,8 +36,9 @@ public class Bot
     public void Reset()
     {
         _currHp = Data.Base.baseHp;
-        _critRound = Random.Range(0, Data.Base.roundCount);
-        _blockRound = Random.Range(0, Data.Base.roundCount);
+        var random = new System.Random();
+        _critRound = random.Next(0, Data.Base.roundCount);
+        _blockRound = random.Next(0, Data.Base.roundCount);
     }
     
     public void Damage(float value)

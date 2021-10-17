@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Scripting;
@@ -79,12 +80,12 @@ public class SettingsController : MonoBehaviour
     
     public void Save()
     {
-        Data.Base.baseHp = float.Parse(_baseHpInput.text);
-        Data.Base.baseAttack = float.Parse(_baseAttackInput.text);
-        Data.Base.baseDeffence = float.Parse(_baseDeffenceInput.text);
-        Data.Base.critMultiplier = float.Parse(_critMultiplierInput.text);
-        Data.Base.platformBonus = float.Parse(_platformBonusInput.text);
-        Data.Base.roundCount = int.Parse(_roundCountInput.text);
+        Data.Base.baseHp = float.Parse(_baseHpInput.text, CultureInfo.InvariantCulture);
+        Data.Base.baseAttack = float.Parse(_baseAttackInput.text, CultureInfo.InvariantCulture);
+        Data.Base.baseDeffence = float.Parse(_baseDeffenceInput.text, CultureInfo.InvariantCulture);
+        Data.Base.critMultiplier = float.Parse(_critMultiplierInput.text, CultureInfo.InvariantCulture);
+        Data.Base.platformBonus = float.Parse(_platformBonusInput.text, CultureInfo.InvariantCulture);
+        Data.Base.roundCount = int.Parse(_roundCountInput.text, CultureInfo.InvariantCulture);
 
         for (int i = 0; i < Data.Weapos.Length; i++)
         {
