@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public static class Data
 {
     public static BaseData Base;
-    public static WeaponData[] Weapos;
+    public static WeaponData[] Weapons;
     public static ToyData[] Toys;
     public static ResistanceData[] Resistance;
 
@@ -15,27 +16,27 @@ public static class Data
         Base = new BaseData();
 
         string[] weaponNames = Enum.GetNames(typeof(EWeaponType));
-        Weapos = new WeaponData[weaponNames.Length];
-        Weapos[0].Type = EWeaponType.Lighting;
-        Weapos[0].Damage = 3;
-        Weapos[1].Type = EWeaponType.Claw;
-        Weapos[1].Damage = 2.5f;
-        Weapos[2].Type = EWeaponType.Club;
-        Weapos[2].Damage = 2f;
-        Weapos[3].Type = EWeaponType.DoubleSpike;
-        Weapos[3].Damage = 1.5f;
-        Weapos[4].Type = EWeaponType.Spike;
-        Weapos[4].Damage = 1.2f;
-        Weapos[5].Type = EWeaponType.Blade;
-        Weapos[5].Damage = 1f;
-        Weapos[6].Type = EWeaponType.Saw;
-        Weapos[6].Damage = 1f;
-        Weapos[7].Type = EWeaponType.Drill;
-        Weapos[7].Damage = 1f;
-        Weapos[8].Type = EWeaponType.Hammer;
-        Weapos[8].Damage = 1f;
-        Weapos[9].Type = EWeaponType.Axe;
-        Weapos[9].Damage = 1f;
+        Weapons = new WeaponData[weaponNames.Length];
+        Weapons[0].Type = EWeaponType.Lighting;
+        Weapons[0].Damage = 3;
+        Weapons[1].Type = EWeaponType.Claw;
+        Weapons[1].Damage = 2.5f;
+        Weapons[2].Type = EWeaponType.Club;
+        Weapons[2].Damage = 2f;
+        Weapons[3].Type = EWeaponType.DoubleSpike;
+        Weapons[3].Damage = 1.5f;
+        Weapons[4].Type = EWeaponType.Spike;
+        Weapons[4].Damage = 1.2f;
+        Weapons[5].Type = EWeaponType.Blade;
+        Weapons[5].Damage = 1f;
+        Weapons[6].Type = EWeaponType.Saw;
+        Weapons[6].Damage = 1f;
+        Weapons[7].Type = EWeaponType.Drill;
+        Weapons[7].Damage = 1f;
+        Weapons[8].Type = EWeaponType.Hammer;
+        Weapons[8].Damage = 1f;
+        Weapons[9].Type = EWeaponType.Axe;
+        Weapons[9].Damage = 1f;
 
         string[] toyNames = Enum.GetNames(typeof(EToyType));
         Toys = new ToyData[11];

@@ -57,7 +57,7 @@ public class SettingsController : MonoBehaviour
     private void InitWeapons()
     {
         WeaponItem weaponItem;
-        foreach (var weaponData in Data.Weapos)
+        foreach (var weaponData in Data.Weapons)
         {
             weaponItem = Instantiate(_weaponItemPrefab, _weaponsRoot);
             weaponItem.name = $"{weaponData.Type}";
@@ -87,9 +87,9 @@ public class SettingsController : MonoBehaviour
         Data.Base.platformBonus = float.Parse(_platformBonusInput.text, CultureInfo.InvariantCulture);
         Data.Base.roundCount = int.Parse(_roundCountInput.text, CultureInfo.InvariantCulture);
 
-        for (int i = 0; i < Data.Weapos.Length; i++)
+        for (int i = 0; i < Data.Weapons.Length; i++)
         {
-            Data.Weapos[i].Damage = _weaponItems[i].value;
+            Data.Weapons[i].Damage = _weaponItems[i].value;
         }
         
         for (int i = 0; i < Data.Toys.Length; i++)

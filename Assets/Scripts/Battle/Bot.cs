@@ -48,7 +48,7 @@ public class Bot
 
     public float Attack()
     {
-        return Data.Base.baseAttack + Data.Weapos[(int) _weapon].Damage;
+        return Data.Base.baseAttack + Data.Weapons[(int) _weapon].Damage;
     }
     
     public float Block(EWeaponType strikeWeapon)

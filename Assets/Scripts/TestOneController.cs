@@ -48,7 +48,7 @@ public class TestOneController : MonoBehaviour
         _arenaDropdown.ClearOptions();
 
         List<string> options = new List<string>();
-        foreach (var weaponData in Data.Weapos)
+        foreach (var weaponData in Data.Weapons)
         {
             options.Add($"{weaponData.Type}");
         }

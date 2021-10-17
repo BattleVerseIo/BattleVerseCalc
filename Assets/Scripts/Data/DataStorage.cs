@@ -19,7 +19,7 @@ public class DataStorage
         if (PlayerPrefs.HasKey(BASE))
             Data.Base = JsonUtility.FromJson<BaseData>(PlayerPrefs.GetString(BASE));
         if (PlayerPrefs.HasKey(WEAPONS))
-            Data.Weapos = JsonHelper.FromJson<WeaponData>(PlayerPrefs.GetString(WEAPONS));
+            Data.Weapons = JsonHelper.FromJson<WeaponData>(PlayerPrefs.GetString(WEAPONS));
         if (PlayerPrefs.HasKey(TOYS))
             Data.Toys = JsonHelper.FromJson<ToyData>(PlayerPrefs.GetString(TOYS));
         if (PlayerPrefs.HasKey(RESISTANCE))
@@ -29,7 +29,7 @@ public class DataStorage
     public void Save()
     {
         PlayerPrefs.SetString(BASE, JsonUtility.ToJson(Data.Base));
-        PlayerPrefs.SetString(WEAPONS, JsonHelper.ToJson(Data.Weapos));
+        PlayerPrefs.SetString(WEAPONS, JsonHelper.ToJson(Data.Weapons));
         PlayerPrefs.SetString(TOYS, JsonHelper.ToJson(Data.Toys));
         string json = JsonHelper.ToJson(Data.Resistance);
         PlayerPrefs.SetString(RESISTANCE, json);
