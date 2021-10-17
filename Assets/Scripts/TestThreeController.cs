@@ -10,6 +10,7 @@ using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 using UnityEngine.UI;
+using Random = System.Random;
 
 public class TestThreeController : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class TestThreeController : MonoBehaviour
     private TMP_InputField _strongBotWinPercentInput;
     [SerializeField]
     private TMP_InputField _weakBotWinPercentInput;
+    [SerializeField]
+    private Button _fightBtn;
     [SerializeField]
     private Image _progress;
     [SerializeField]
@@ -62,6 +65,8 @@ public class TestThreeController : MonoBehaviour
 
     private void Init()
     {
+        _progress.fillAmount = 0;
+        _progressLabel.text = String.Empty; 
         
         _botCount = _table.dataArray.Length;
         _bots = new NativeArray<JobBotData>(_botCount, Allocator.Persistent);
@@ -127,6 +132,14 @@ public class TestThreeController : MonoBehaviour
 
     public void Fight()
     {
+        StartCoroutine(DoFight());
+    }
+
+    public IEnumerator DoFight()
+    {
+        float time = Time.realtimeSinceStartup;
+        _fightBtn.interactable = false;
+        
         int arenaCount = Enum.GetValues(typeof(EArenaType)).Length;
         _battleCount = int.Parse(_battleCountInput.text);
         _strongBotWinPercent = float.Parse(_strongBotWinPercentInput.text, CultureInfo.InvariantCulture);
@@ -134,50 +147,97 @@ public class TestThreeController : MonoBehaviour
         
         _botStatistics = new JobBotStatistic[_table.dataArray.Length];
 
-        NativeArray<int> win = new NativeArray<int>(_botCount, Allocator.Persistent);
-        NativeArray<int> loose = new NativeArray<int>(_botCount, Allocator.Persistent);
-        NativeArray<int> draw = new NativeArray<int>(_botCount, Allocator.Persistent);
-        
-        var job = new JobBattle()
+        int botCountPow = _botCount * arenaCount;
+        NativeArray<int> win1 = new NativeArray<int>(_botCount, Allocator.Persistent);
+        NativeArray<int> win2 = new NativeArray<int>(_botCount, Allocator.Persistent);
+        NativeArray<int> winResult = default; 
+        //NativeArray<int> loose = new NativeArray<int>(_botCount, Allocator.Persistent);
+        //NativeArray<int> draw = new NativeArray<int>(_botCount, Allocator.Persistent);
+        JobHandle jobHandle = default;
+        int index = 0;
+        int count = _botCount * arenaCount * _battleCount;
+        for (int i = 0; i < _botCount; i++)
         {
-            roundCount = Data.Base.roundCount,
-            baseHP = Data.Base.baseHp,
-            baseAttack = Data.Base.baseAttack,
-            critMultiplier = Data.Base.critMultiplier,
-            platformBonus = Data.Base.platformBonus,
+            for (int j = 0; j < arenaCount; j++)
+            {
+                for (int k = 0; k < _battleCount; k++)
+                {
+                    var job = new JobBattle()
+                    {
+                        randomSeed = UnityEngine.Random.Range(0, int.MaxValue),
+                        id_2 = i,
+                        arenaNum = j,
+                        roundCount = Data.Base.roundCount,
+                        baseHP = Data.Base.baseHp,
+                        baseAttack = Data.Base.baseAttack,
+                        critMultiplier = Data.Base.critMultiplier,
+                        platformBonus = Data.Base.platformBonus,
             
-            arenaCount = arenaCount,
-            botCountPow = _botCount * arenaCount,
+                        arenaCount = arenaCount,
+                        botCountPow = botCountPow,
             
-            bots = _bots,
-            weapons = _weapons,
-            toys = _toys,
-            resistance = _resistance,
+                        bots = _bots,
+                        weapons = _weapons,
+                        toys = _toys,
+                        resistance = _resistance,
+                    };
+
+                    if (index % 2 == 0)
+                    {
+                        job.winCount = win1;
+                        job.prevWinCount = win2;
+                    }
+                    else
+                    {
+                        job.winCount = win2;
+                        job.prevWinCount = win1;
+                    }
             
-            winCount = win,
-            looseCount = loose,
-            drawCount = draw
-        };
-        
-        JobHandle jobHandle = job.Schedule(_totalBattleCount, 64);
+                    jobHandle = job.Schedule(_botCount, 64, jobHandle);
+
+                    if (index % 100 == 0)
+                    {
+                        jobHandle.Complete();
+                        jobHandle = default;
+                
+                        _progress.fillAmount = (float)index / count;
+                        _progressLabel.text = $"{index} / {count}"; 
+                        yield return new WaitForEndOfFrame();
+                    }
+
+                    index++;
+                }
+            }
+        }
         
         jobHandle.Complete();
+        _progress.fillAmount = 1;
+        _progressLabel.text = $"{count} / {count}";
+
+        _progressLabel.text = $"{Time.realtimeSinceStartup - time}";
+
+        if (count % 2 == 0)
+            PrintLog(win1);
+        else 
+            PrintLog(win2);
         
-        
-        PrintLog(win, loose, draw);
-        
-        win.Dispose();
-        loose.Dispose();
-        draw.Dispose();
+
+        win1.Dispose();
+        win2.Dispose();
+//        loose.Dispose();
+//        draw.Dispose();
+
+        _fightBtn.interactable = true;
     }
     
     
-    private void PrintLog(NativeArray<int> win, NativeArray<int> loose, NativeArray<int> draw)
+    private void PrintLog(NativeArray<int> win)//, NativeArray<int> loose, NativeArray<int> draw)
     {
         string s = String.Empty;
         for (int i = 0; i < 20; i++)
         {
-            s += $"id={i} win={win[i]} loose={loose[i]} draw={draw[i]}\n";
+            s += $"id={i} win={win[i]}\n";
+            //s += $"id={i} win={win[i]} loose={loose[i]} draw={draw[i]}\n";
         }
 
         _log.text = s;

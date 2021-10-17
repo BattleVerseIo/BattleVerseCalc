@@ -2872,6 +2872,7 @@ MonoBehaviour:
   _battleCountInput: {fileID: 1255317734}
   _strongBotWinPercentInput: {fileID: 1795261488}
   _weakBotWinPercentInput: {fileID: 1169674723}
+  _fightBtn: {fileID: 1138513235}
   _progress: {fileID: 1930630112}
   _progressLabel: {fileID: 1400793275}
   _log: {fileID: 830270801}
@@ -5253,10 +5254,10 @@ RectTransform:
   m_Father: {fileID: 396252073}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -177.8}
-  m_SizeDelta: {x: -40, y: -395.7}
+  m_AnchoredPosition: {x: 0, y: -649.7}
+  m_SizeDelta: {x: -40, y: 496.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &830270800
 MonoBehaviour:
@@ -5801,10 +5802,10 @@ RectTransform:
   m_Father: {fileID: 396252073}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 127.84}
-  m_SizeDelta: {x: -200, y: 48.7}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -329.16}
+  m_SizeDelta: {x: 1720, y: 48.700012}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &912991548
 MonoBehaviour:

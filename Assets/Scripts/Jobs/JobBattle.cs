@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
@@ -7,6 +8,12 @@ using UnityEngine;
 
 public struct JobBattle : IJobParallelFor
 {
+    [ReadOnly]
+    public int randomSeed;
+    [ReadOnly]
+    public int id_2; 
+    [ReadOnly]
+    public int arenaNum;
     [ReadOnly]
     public int roundCount;
     [ReadOnly]
@@ -34,21 +41,25 @@ public struct JobBattle : IJobParallelFor
     //[ReadOnly]
     //public NativeArray<JobVersus> versus;
     
+    [ReadOnly]
+    public NativeArray<int> prevWinCount;
+    [WriteOnly]
     public NativeArray<int> winCount;
-    public NativeArray<int> looseCount;
-    public NativeArray<int> drawCount;
+    //public NativeArray<int> looseCount;
+    //public NativeArray<int> drawCount;
     
     public void Execute(int i)
     {
-        int id_1 = i / botCountPow;
-        int j = i % botCountPow;
-        int id_2 = j / arenaCount;
-        EArenaType arena = (EArenaType)(i % arenaCount);
+        //int id_1 = i / botCountPow;
+        //int j = i % botCountPow;
+        //int id_2 = j / arenaCount;
+        int id_1 = i;
+        EArenaType arena = (EArenaType) arenaNum; //(i % arenaCount);
         
         if (id_1 == id_2)
             return;
 
-        Unity.Mathematics.Random random = new Unity.Mathematics.Random((uint)i);
+        Unity.Mathematics.Random random = new Unity.Mathematics.Random((uint)randomSeed);
         
         
         JobBot bot1 = new JobBot();
@@ -87,20 +98,21 @@ public struct JobBattle : IJobParallelFor
 
         if (Mathf.Approximately(bot1.hp, bot2.hp))
         {
-            drawCount[id_1]++;
-            drawCount[id_2]++;
+            //drawCount[id_1]++;
+            //drawCount[id_2]++;
         }
-        else {
+        else
+        {
             if (bot1.hp > bot2.hp)
             {
-                winCount[id_1]++;
-                looseCount[id_2]++;
+                winCount[i] = prevWinCount[i] + 1;
             }
+            /*
             else
             {
-                winCount[id_2]++;
-                looseCount[id_1]++;
+                winCount[i] = id_2;
             }
+            */
         }
     }
 }
