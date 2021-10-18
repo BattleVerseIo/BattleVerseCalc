@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
@@ -33,6 +34,7 @@ public class TestThreeController : MonoBehaviour
     private Bots _table;
 
 
+    private DateTime _startTime;
     private int _battleCount;
     private int _totalBattleCount;
     private int _prepareBattleCount;
@@ -137,7 +139,7 @@ public class TestThreeController : MonoBehaviour
 
     public IEnumerator DoFight()
     {
-        float time = Time.realtimeSinceStartup;
+        _startTime = DateTime.Now;
         _fightBtn.interactable = false;
         
         int arenaCount = Enum.GetValues(typeof(EArenaType)).Length;
@@ -150,9 +152,10 @@ public class TestThreeController : MonoBehaviour
         int botCountPow = _botCount * arenaCount;
         NativeArray<int> win1 = new NativeArray<int>(_botCount, Allocator.Persistent);
         NativeArray<int> win2 = new NativeArray<int>(_botCount, Allocator.Persistent);
-        NativeArray<int> winResult = default; 
-        //NativeArray<int> loose = new NativeArray<int>(_botCount, Allocator.Persistent);
-        //NativeArray<int> draw = new NativeArray<int>(_botCount, Allocator.Persistent);
+        NativeArray<int> loose1 = new NativeArray<int>(_botCount, Allocator.Persistent);
+        NativeArray<int> loose2 = new NativeArray<int>(_botCount, Allocator.Persistent);
+        NativeArray<int> draw1 = new NativeArray<int>(_botCount, Allocator.Persistent);
+        NativeArray<int> draw2 = new NativeArray<int>(_botCount, Allocator.Persistent);
         JobHandle jobHandle = default;
         int index = 0;
         int count = _botCount * arenaCount * _battleCount;
@@ -185,12 +188,20 @@ public class TestThreeController : MonoBehaviour
                     if (index % 2 == 0)
                     {
                         job.winCount = win1;
+                        job.looseCount = loose1;
+                        job.drawCount = draw1;
                         job.prevWinCount = win2;
+                        job.prevLooseCount = loose2;
+                        job.prevDrawCount = draw2;
                     }
                     else
                     {
                         job.winCount = win2;
+                        job.looseCount = loose2;
+                        job.drawCount = draw2;
                         job.prevWinCount = win1;
+                        job.prevLooseCount = loose1;
+                        job.prevDrawCount = draw1;
                     }
             
                     jobHandle = job.Schedule(_botCount, 64, jobHandle);
@@ -201,7 +212,7 @@ public class TestThreeController : MonoBehaviour
                         jobHandle = default;
                 
                         _progress.fillAmount = (float)index / count;
-                        _progressLabel.text = $"{index} / {count}"; 
+                        _progressLabel.text = $"{_progress.fillAmount:P}"; 
                         yield return new WaitForEndOfFrame();
                     }
 
@@ -212,35 +223,42 @@ public class TestThreeController : MonoBehaviour
         
         jobHandle.Complete();
         _progress.fillAmount = 1;
-        _progressLabel.text = $"{count} / {count}";
-
-        _progressLabel.text = $"{Time.realtimeSinceStartup - time}";
+        _progressLabel.text = "100%";
 
         if (count % 2 == 0)
-            PrintLog(win1);
+            PrintLog(win2, loose2, draw2);
         else 
-            PrintLog(win2);
+            PrintLog(win1, loose1, draw1);
         
 
         win1.Dispose();
         win2.Dispose();
-//        loose.Dispose();
-//        draw.Dispose();
+        loose1.Dispose();
+        loose2.Dispose();
+        draw1.Dispose();
+        draw2.Dispose();
 
         _fightBtn.interactable = true;
     }
     
     
-    private void PrintLog(NativeArray<int> win)//, NativeArray<int> loose, NativeArray<int> draw)
+    private void PrintLog(NativeArray<int> win, NativeArray<int> loose, NativeArray<int> draw)
     {
+        int total = 0;
         string s = String.Empty;
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < win.Length; i++)
         {
-            s += $"id={i} win={win[i]}\n";
-            //s += $"id={i} win={win[i]} loose={loose[i]} draw={draw[i]}\n";
+            total = win[i] + loose[i] + draw[i];
+            s += $"id={i} win={win[i]} loose={loose[i]} draw={draw[i]} total={total}\n";
         }
 
-        _log.text = s;
+        TimeSpan deltaTime = DateTime.Now - _startTime;
+        string path = Application.dataPath + "/log_test3.txt";
+        File.WriteAllText(path, s);
+        _log.text = $"execution time: {deltaTime:hh\\:mm\\:ss}\n";
+        _log.text += $"total battle count: {total * _botCount}\n";
+        _log.text += $"Log saved in {path}";
+
     }
 }
 

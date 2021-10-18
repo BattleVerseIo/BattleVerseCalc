@@ -43,10 +43,16 @@ public struct JobBattle : IJobParallelFor
     
     [ReadOnly]
     public NativeArray<int> prevWinCount;
+    [ReadOnly]
+    public NativeArray<int> prevLooseCount;
+    [ReadOnly]
+    public NativeArray<int> prevDrawCount;
     [WriteOnly]
     public NativeArray<int> winCount;
-    //public NativeArray<int> looseCount;
-    //public NativeArray<int> drawCount;
+    [WriteOnly]
+    public NativeArray<int> looseCount;
+    [WriteOnly]
+    public NativeArray<int> drawCount;
     
     public void Execute(int i)
     {
@@ -56,8 +62,8 @@ public struct JobBattle : IJobParallelFor
         int id_1 = i;
         EArenaType arena = (EArenaType) arenaNum; //(i % arenaCount);
         
-        if (id_1 == id_2)
-            return;
+        //if (id_1 == id_2)
+        //    return;
 
         Unity.Mathematics.Random random = new Unity.Mathematics.Random((uint)randomSeed);
         
@@ -98,21 +104,24 @@ public struct JobBattle : IJobParallelFor
 
         if (Mathf.Approximately(bot1.hp, bot2.hp))
         {
-            //drawCount[id_1]++;
-            //drawCount[id_2]++;
+            winCount[i] = prevWinCount[i];
+            looseCount[i] = prevLooseCount[i];
+            drawCount[i] = prevDrawCount[i] + 1;
         }
         else
         {
             if (bot1.hp > bot2.hp)
             {
                 winCount[i] = prevWinCount[i] + 1;
+                looseCount[i] = prevLooseCount[i];
+                drawCount[i] = prevDrawCount[i];
             }
-            /*
             else
             {
-                winCount[i] = id_2;
+                winCount[i] = prevWinCount[i];
+                looseCount[i] = prevLooseCount[i] + 1;
+                drawCount[i] = prevDrawCount[i];
             }
-            */
         }
     }
 }
