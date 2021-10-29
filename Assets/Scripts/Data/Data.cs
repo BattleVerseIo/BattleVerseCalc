@@ -97,7 +97,6 @@ public class BaseData
 {
     public float baseHp = 100;
     public float baseAttack = 30;
-    public float baseDeffence = 50;
     public float critMultiplier = 1.5f;
     public float platformBonus = 2;
     public int roundCount = 3;

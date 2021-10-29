@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
+using Unity.Mathematics;
 using UnityEngine;
 
-
+[BurstCompile]
 public struct JobBattle : IJobParallelFor
 {
     [ReadOnly]
@@ -102,7 +104,8 @@ public struct JobBattle : IJobParallelFor
             bot1.hp -= attack;
         }
 
-        if (Mathf.Approximately(bot1.hp, bot2.hp))
+        
+        if (Mathf.Abs(bot1.hp - bot2.hp) < float.Epsilon)
         {
             winCount[i] = prevWinCount[i];
             looseCount[i] = prevLooseCount[i];

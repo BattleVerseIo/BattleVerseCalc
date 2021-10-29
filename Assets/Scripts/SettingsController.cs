@@ -13,8 +13,6 @@ public class SettingsController : MonoBehaviour
     [SerializeField]
     private TMP_InputField _baseAttackInput;
     [SerializeField]
-    private TMP_InputField _baseDeffenceInput;
-    [SerializeField]
     private TMP_InputField _critMultiplierInput;
     [SerializeField]
     private TMP_InputField _platformBonusInput;
@@ -45,7 +43,6 @@ public class SettingsController : MonoBehaviour
     {
         _baseHpInput.text = $"{Data.Base.baseHp}";
         _baseAttackInput.text = $"{Data.Base.baseAttack}";
-        _baseDeffenceInput.text = $"{Data.Base.baseDeffence}";
         _critMultiplierInput.text = $"{Data.Base.critMultiplier}";
         _platformBonusInput.text = $"{Data.Base.platformBonus}";
         _roundCountInput.text = $"{Data.Base.roundCount}";
@@ -82,7 +79,6 @@ public class SettingsController : MonoBehaviour
     {
         Data.Base.baseHp = float.Parse(_baseHpInput.text, CultureInfo.InvariantCulture);
         Data.Base.baseAttack = float.Parse(_baseAttackInput.text, CultureInfo.InvariantCulture);
-        Data.Base.baseDeffence = float.Parse(_baseDeffenceInput.text, CultureInfo.InvariantCulture);
         Data.Base.critMultiplier = float.Parse(_critMultiplierInput.text, CultureInfo.InvariantCulture);
         Data.Base.platformBonus = float.Parse(_platformBonusInput.text, CultureInfo.InvariantCulture);
         Data.Base.roundCount = int.Parse(_roundCountInput.text, CultureInfo.InvariantCulture);

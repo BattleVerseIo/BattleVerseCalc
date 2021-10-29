@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,8 @@ public class Bot
 
     public int CritRound => _critRound;
     public int BlockRound => _blockRound;
+
+    private static int RandomSeed;
     
     public Bot(int id, EWeaponType weapon, EToyType toy, EPlatformType platform)
     {
@@ -30,15 +33,21 @@ public class Bot
         _toy = toy;
         _platform = platform;
 
+        if (RandomSeed == default)
+            RandomSeed = DateTime.Now.Millisecond;
+        
         Reset();
     }
 
     public void Reset()
     {
         _currHp = Data.Base.baseHp;
-        var random = new System.Random();
-        _critRound = random.Next(0, Data.Base.roundCount);
-        _blockRound = random.Next(0, Data.Base.roundCount);
+        RandomSeed++;
+        //var random = new System.Random(RandomSeed);
+        //_critRound = random.Next(0, Data.Base.roundCount);
+        //_blockRound = random.Next(0, Data.Base.roundCount)
+        _critRound = UnityEngine.Random.Range(0, Data.Base.roundCount);
+        _blockRound = UnityEngine.Random.Range(0, Data.Base.roundCount);
     }
     
     public void Damage(float value)

@@ -141,11 +141,12 @@ public class TestThreeController : MonoBehaviour
     {
         _startTime = DateTime.Now;
         _fightBtn.interactable = false;
+        _log.text = String.Empty;
         
         int arenaCount = Enum.GetValues(typeof(EArenaType)).Length;
         _battleCount = int.Parse(_battleCountInput.text);
-        _strongBotWinPercent = float.Parse(_strongBotWinPercentInput.text, CultureInfo.InvariantCulture);
-        _weakBotWinPercent = float.Parse(_weakBotWinPercentInput.text, CultureInfo.InvariantCulture);
+        _strongBotWinPercent = float.Parse(_strongBotWinPercentInput.text, CultureInfo.InvariantCulture) / 100;
+        _weakBotWinPercent = float.Parse(_weakBotWinPercentInput.text, CultureInfo.InvariantCulture) / 100;
         
         _botStatistics = new JobBotStatistic[_table.dataArray.Length];
 
@@ -226,9 +227,9 @@ public class TestThreeController : MonoBehaviour
         _progressLabel.text = "100%";
 
         if (count % 2 == 0)
-            PrintLog(win2, loose2, draw2);
+            yield return PrintLog(win2, loose2, draw2);
         else 
-            PrintLog(win1, loose1, draw1);
+            yield return PrintLog(win1, loose1, draw1);
         
 
         win1.Dispose();
@@ -242,22 +243,49 @@ public class TestThreeController : MonoBehaviour
     }
     
     
-    private void PrintLog(NativeArray<int> win, NativeArray<int> loose, NativeArray<int> draw)
+    private IEnumerator PrintLog(NativeArray<int> win, NativeArray<int> loose, NativeArray<int> draw)
     {
-        int total = 0;
-        string s = String.Empty;
+        string strong = "id\n";
+        string normal = "id\n";
+        string weak = "id\n";
+
+        int total = win[0] + loose[0] + draw[0];
+        
+        string s = "id, win, loose, draw\n";
         for (int i = 0; i < win.Length; i++)
         {
-            total = win[i] + loose[i] + draw[i];
-            s += $"id={i} win={win[i]} loose={loose[i]} draw={draw[i]} total={total}\n";
+            s += $"{i}, {win[i]}, {loose[i]}, {draw[i]}\n";
+
+            if ((float)win[i] / total >= _strongBotWinPercent)
+                strong += $"{i}\n";
+            else 
+            if((float)win[i] / total < _weakBotWinPercent)
+                weak += $"{i}\n";
+            else
+                normal += $"{i}\n";
+            
+            
+            if (i % 100 == 0)
+            {
+                yield return new WaitForEndOfFrame();
+            }
         }
 
         TimeSpan deltaTime = DateTime.Now - _startTime;
-        string path = Application.dataPath + "/log_test3.txt";
+        string path = Application.dataPath + "/log_test3.csv";
+        string strongPath = Application.dataPath + "/strong.csv";
+        string wealPath = Application.dataPath + "/weak.csv";
+        string normalPath = Application.dataPath + "/normal.csv";
         File.WriteAllText(path, s);
+        File.WriteAllText(strongPath, strong);
+        File.WriteAllText(wealPath, weak);
+        File.WriteAllText(normalPath, normal);
         _log.text = $"execution time: {deltaTime:hh\\:mm\\:ss}\n";
         _log.text += $"total battle count: {total * _botCount}\n";
-        _log.text += $"Log saved in {path}";
+        _log.text += $"Log saved in {path}\n";
+        _log.text += $"Strong id's saved in {strongPath}\n";
+        _log.text += $"Weak id's saved in {wealPath}\n";
+        _log.text += $"Normal id's saved in {normalPath}\n";
 
     }
 }
