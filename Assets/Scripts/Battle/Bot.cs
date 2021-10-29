@@ -62,7 +62,9 @@ public class Bot
     
     public float Block(EWeaponType strikeWeapon)
     {
-        return 1 - (Data.Resistance[(int)strikeWeapon].value[(int)_toy] + Data.Toys[(int) _toy].Defence) / 100;
+        float result = 1 - (Data.Resistance[(int)strikeWeapon].value[(int)_toy] + Data.Toys[(int) _toy].Defence) / 100;
+        result = Mathf.Clamp01(result);
+        return result;
     }
     
 }

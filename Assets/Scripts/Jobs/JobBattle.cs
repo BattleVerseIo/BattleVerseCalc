@@ -81,6 +81,7 @@ public struct JobBattle : IJobParallelFor
         bot2.blockRound = random.NextInt(0, roundCount);
 
         float attack;
+        float block;
         for (int round = 0; round < roundCount; round++)
         {
             attack = baseAttack + weapons[(int) bots[id_1].weapon].Damage;
@@ -88,7 +89,10 @@ public struct JobBattle : IJobParallelFor
                 attack *= critMultiplier;
             if (bot2.blockRound == round)
             {
-                attack *= 1 - (resistance[(int) bots[id_1].weapon * weapons.Length + (int) bots[id_2].toy] + toys[(int) bots[id_2].toy].Defence) / 100;
+                block = 1 - (resistance[(int) bots[id_1].weapon * weapons.Length + (int) bots[id_2].toy] + toys[(int) bots[id_2].toy].Defence) / 100;
+                if (block < 0)
+                    block = 0;
+                attack *= block;
                 attack -= bots[id_2].platform == (EPlatformType) arena ? platformBonus : 0;
             }
             bot2.hp -= attack;
@@ -98,7 +102,10 @@ public struct JobBattle : IJobParallelFor
                 attack *= critMultiplier;
             if (bot1.blockRound == round)
             {
-                attack *= 1 - (resistance[(int) bots[id_2].weapon * weapons.Length + (int) bots[id_1].toy] + toys[(int) bots[id_1].toy].Defence) / 100;
+                block = 1 - (resistance[(int) bots[id_2].weapon * weapons.Length + (int) bots[id_1].toy] + toys[(int) bots[id_1].toy].Defence) / 100;
+                if (block < 0)
+                    block = 0;
+                attack *= block;
                 attack -= bots[id_1].platform == (EPlatformType) arena ? platformBonus : 0;
             }
             bot1.hp -= attack;
